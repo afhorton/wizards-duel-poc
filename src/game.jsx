@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
 const Game = () => {
+    const [isPlayersTurn, setIsPlayersTurn] = useState(true);
+    
+    //This controls whether or not the game ends.
+    //Game ends when either hero or enemy's hp reaches zero.
+    const [isGameOver, setIsGameOver] = useState(false);
+
+    useEffect(
+        () => {
+            if (hero.hp <= 0 || enemy.hp <= 0) {
+                setIsGameOver(true);
+            }
+        }, [hero.hp, enemy.hp]
+    );
+
+// Hero and Enemy States
     const [hero, setHero] = useState({
         name: "Greendolf",
         hp: 100,
@@ -17,11 +32,13 @@ const Game = () => {
         defense: 10
     });
 
+    // Hero Spells
     const vineWhip = () => {
         let dmg = 20;
         let mpCost = 10;
         setEnemy({ ...enemy, hp: enemy.hp - dmg });
         setHero({...hero, mp: hero.mp - mpCost})
+        setIsPlayersTurn(false);
     }
  
      const razorLeaf = () => {
@@ -29,6 +46,7 @@ const Game = () => {
        let mpCost = 20;
        setEnemy({ ...enemy, hp: enemy.hp - dmg });
        setHero({ ...hero, mp: hero.mp - mpCost });
+       setIsPlayersTurn(false);
      };
      
      const solarBeam = () => {
@@ -36,28 +54,74 @@ const Game = () => {
        let mpCost = 30;
        setEnemy({ ...enemy, hp: enemy.hp - dmg });
        setHero({ ...hero, mp: hero.mp - mpCost });
+       setIsPlayersTurn(false);
      };
 
-      const ember = () => {
+      const reManaHero = () => {
+        let mpGain = 20;
+        setHero({ ...hero, mp: hero.mp + mpGain });
+        setIsPlayersTurn(false);
+      };
+
+       const reGenHero = () => {
+         let mpCost = 20;
+         let hpGain = 30;
+         setHero({
+           ...hero,
+           mp: hero.mp - mpCost,
+           hp: hero.hp + hpGain,
+         });
+         setIsPlayersTurn(false);
+       };
+
+       //Enemy Spells 
+    const enemySpells = [
+        
+        function ember (){
         let dmg = 20;
         let mpCost = 10;
-        setEnemy({ ...hero, hp: hero.hp - dmg });
-        setHero({ ...enemy, mp: enemy.mp - mpCost });
-      };
+        setHero({ ...hero, hp: hero.hp - dmg });
+        setEnemy({ ...enemy, mp: enemy.mp - mpCost });
+      },
 
-      const flamethrower = () => {
+      function flamethrower () {
         let dmg = 30;
         let mpCost = 20;
-        setEnemy({ ...hero, hp: hero.hp - dmg });
-        setHero({ ...enemy, mp: enemy.mp - mpCost });
-      };
+        setHero({ ...hero, hp: hero.hp - dmg });
+        setEnemy({ ...enemy, mp: enemy.mp - mpCost });
+      },
 
-      const fireblast = () => {
+      function fireblast () {
         let dmg = 40;
         let mpCost = 30;
-        setEnemy({ ...hero, hp: hero.hp - dmg });
-        setHero({ ...enemy, mp: enemy.mp - mpCost });
-      };
+        setHero({ ...hero, hp: hero.hp - dmg });
+        setEnemy({ ...enemy, mp: enemy.mp - mpCost });
+      },
+
+      function punch () {
+        let dmg = 10;
+        let mpCost = 0;
+        setHero({ ...hero, hp: hero.hp - dmg });
+        setEnemy({ ...enemy, mp: enemy.mp - mpCost });
+      },
+
+      function reManaEnemy () {
+        let mpGain = 20;
+         setEnemy({ ...enemy, mp: enemy.mp + mpGain });
+      },
+
+    
+         function reGenEnemy () {
+           let mpCost = 20;
+           let hpGain = 30;
+           setEnemy({ ...enemy, mp: enemy.mp - mpCost, hp: enemy.hp + hpGain});
+         }
+        ];
+
+        
+
+
+
     return (
       <div>
         <h1>Fight!</h1>
@@ -69,6 +133,8 @@ const Game = () => {
             <button onClick={vineWhip}>Vine Whip</button>
             <button onClick={razorLeaf}>Razor Leaf</button>
             <button onClick={solarBeam}>Solar Beam</button>
+            <button onClick={reManaHero}>Re-Mana</button>
+            <button onClick={reGenHero}>Re-Gen</button>
           </div>
           <div>
             <h2>{enemy.name}</h2>
