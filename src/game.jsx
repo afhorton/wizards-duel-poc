@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const Game = () => {
     const [isPlayersTurn, setIsPlayersTurn] = useState(true);
@@ -118,9 +118,14 @@ const Game = () => {
          }
         ];
 
-        
-
-
+    // useEffect() controlling how enemy attacks at random
+    useEffect(
+        () => {
+            if (!isPlayersTurn) {
+                const randomEnemyAttackIndex = Math.floor(Math.random() * enemySpells.length);
+                enemySpells[randomEnemyAttackIndex]();
+            }
+        }, [isPlayersTurn]);
 
     return (
       <div>
@@ -146,3 +151,5 @@ const Game = () => {
       </div>
     );
 }
+
+export default Game;
