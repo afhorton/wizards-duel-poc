@@ -7,13 +7,6 @@ const Game = () => {
     //Game ends when either hero or enemy's hp reaches zero.
     const [isGameOver, setIsGameOver] = useState(false);
 
-    useEffect(
-        () => {
-            if (hero.hp <= 0 || enemy.hp <= 0) {
-                setIsGameOver(true);
-            }
-        }, [hero.hp, enemy.hp]
-    );
 
 // Hero and Enemy States
     const [hero, setHero] = useState({
@@ -124,8 +117,16 @@ const Game = () => {
             if (!isPlayersTurn) {
                 const randomEnemyAttackIndex = Math.floor(Math.random() * enemySpells.length);
                 enemySpells[randomEnemyAttackIndex]();
+                setIsPlayersTurn(true);
             }
         }, [isPlayersTurn]);
+
+           useEffect(() => {
+             if (hero.hp <= 0 || enemy.hp <= 0) {
+               setIsGameOver(true);
+             }
+           }, [hero.hp, enemy.hp]);
+
 
     return (
       <div>
