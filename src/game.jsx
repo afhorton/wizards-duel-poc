@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 
 const Game = () => {
     const [isPlayersTurn, setIsPlayersTurn] = useState(true);
+
     
     //This controls whether or not the game ends.
     //Game ends when either hero or enemy's hp reaches zero.
-    const [isGameOver, setIsGameOver] = useState(false);
+    const [heroAlive, setHeroAliveDiv] = useState(true);
+    const [enemyAlive, setEnemyAlive] = useState(true);
 
 
 // Hero and Enemy States
@@ -121,10 +123,13 @@ const Game = () => {
             }
         }, [isPlayersTurn]);
 
-           useEffect(() => {
-             if (hero.hp <= 0 || enemy.hp <= 0) {
-               setIsGameOver(true);
+    useEffect(() => {
+             if (hero.hp <= 0) {
+               setHeroAliveDiv(false)
              }
+                if (enemy.hp <= 0) {
+                setEnemyAlive(false);
+                }
            }, [hero.hp, enemy.hp]);
 
 
@@ -132,7 +137,7 @@ const Game = () => {
       <div>
         <h1>Fight!</h1>
         <div>
-          <div>
+         {heroAlive(true) && <div id="heroDiv">
             <h2>{hero.name}</h2>
             <p>HP: {hero.hp}</p>
             <p>MP: {hero.mp}</p>
@@ -141,13 +146,17 @@ const Game = () => {
             <button onClick={solarBeam}>Solar Beam</button>
             <button onClick={reManaHero}>Re-Mana</button>
             <button onClick={reGenHero}>Re-Gen</button>
-          </div>
-          <div>
+          </div> ||
+          heroAlive(false) &&
+          <h2>Slain!</h2> 
+          }
+         { enemyAlive(true) && <div id="enemyDiv">
             <h2>{enemy.name}</h2>
             <p>HP: {enemy.hp}</p>
             <p>MP: {enemy.mp}</p>
-            {}
-          </div>
+          </div> || enemyAlive(false) && 
+          <h2>Slain!</h2>
+          }
         </div>
       </div>
     );
