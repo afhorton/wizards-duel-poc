@@ -137,7 +137,8 @@ const Game = () => {
       <div>
         <h1>Fight!</h1>
         <div>
-         {heroAlive === true && <div id="heroDiv">
+        <div>
+         {heroAlive === true && enemyAlive === true && <div id="heroDiv">
             <h2>{hero.name}</h2>
             <p>HP: {hero.hp}</p>
             <p>MP: {hero.mp}</p>
@@ -146,16 +147,22 @@ const Game = () => {
             <button onClick={solarBeam}>Solar Beam</button>
             <button onClick={reManaHero}>Re-Mana</button>
             <button onClick={reGenHero}>Re-Gen</button>
-          </div> ||
-          heroAlive === false &&
-          <h2>Slain!</h2> 
+          </div>}
+          {enemyAlive === true && heroAlive === false &&
+          <h2>Slain!</h2>}
+         {heroAlive === true && enemyAlive === false &&
+            <h2>Winner!</h2>
           }
-         { enemyAlive === true && <div id="enemyDiv">
+          </div>
+         { enemyAlive === true && heroAlive === true && <div id="enemyDiv">
             <h2>{enemy.name}</h2>
             <p>HP: {enemy.hp}</p>
             <p>MP: {enemy.mp}</p>
-          </div> || enemyAlive === false && 
-          <h2>Slain!</h2>
+          </div>}
+          { enemyAlive === false && heroAlive === true && 
+          <h2>Slain!</h2>}
+          {heroAlive === false && enemyAlive === true &&
+          <h2>Winner!</h2>
           }
         </div>
       </div>
